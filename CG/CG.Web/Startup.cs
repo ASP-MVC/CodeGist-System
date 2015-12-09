@@ -1,14 +1,18 @@
-﻿using Microsoft.Owin;
-using Owin;
+﻿using CG.Web;
 
-[assembly: OwinStartupAttribute(typeof(CG.Web.Startup))]
+using Microsoft.Owin;
+
+[assembly: OwinStartup(typeof(Startup))]
+
 namespace CG.Web
 {
+    using Owin;
+
     public partial class Startup
     {
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuth(app);
+            this.ConfigureAuth(app);
         }
     }
 }
