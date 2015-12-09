@@ -16,10 +16,9 @@
         {
         }
 
-        public static CGDbContext Create()
-        {
-            return new CGDbContext();
-        }
+        public IDbSet<Tag> Tags { get; set; }
+
+        public IDbSet<CodeGist> CodeGists { get; set; }
 
         public DbContext DbContext
         {
@@ -27,6 +26,11 @@
             {
                 return this;
             }
+        }
+
+        public static CGDbContext Create()
+        {
+            return new CGDbContext();
         }
 
         public override int SaveChanges()
@@ -39,6 +43,22 @@
         public new IDbSet<T> Set<T>() where T : class
         {
             return base.Set<T>();
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<CodeGist>()
+                        .HasMany(x => x.Tags)
+                        .WithMany(x => x.CodeGists)
+                        .Map(
+                            m =>
+                            {
+                                m.MapLeftKey("CodeGistId");
+                                m.MapRightKey("TagId");
+                                m.ToTable("CodeGistsTags");
+                            });
+
+            base.OnModelCreating(modelBuilder);
         }
 
         private void ApplyAuditInfoRules()
