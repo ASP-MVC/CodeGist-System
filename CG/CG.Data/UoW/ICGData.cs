@@ -3,10 +3,12 @@
     using CG.Data.Repositories;
     using CG.Models;
 
-    public class ICGData
+    public interface ICGData
     {
-        IRepository<Tag> Tags { get; }
+        IDeletableEntityRepository<Tag> Tags { get; }
 
-        IRepository<CodeGist> CodeGists { get; }
+        IRepository<User> Users { get; }
+
+        IDeletableEntityRepository<CodeGist> CodeGists { get; }
     }
 }
