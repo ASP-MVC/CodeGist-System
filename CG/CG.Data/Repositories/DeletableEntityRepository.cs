@@ -7,10 +7,11 @@
     using CG.Contracts;
     using CG.Contracts.Models;
 
-    public class DeletableEntityRepository<T> :
-    GenericRepository<T>, IDeletableEntityRepository<T> where T : class, IDeletableEntity, IEntity
+    public class DeletableEntityRepository<T> : GenericRepository<T>,
+                                                IDeletableEntityRepository<T>
+        where T : class, IDeletableEntity, IEntity
     {
-        public DeletableEntityRepository(ICGContext context)
+        public DeletableEntityRepository(ICGDbContext context)
             : base(context)
         {
         }

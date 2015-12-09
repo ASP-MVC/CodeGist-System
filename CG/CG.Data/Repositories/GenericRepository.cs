@@ -12,13 +12,16 @@
     using CG.Common.Extensions;
     using CG.Contracts;
 
-    public class GenericRepository<T> : IRepository<T> where T : class, IEntity
+    public class GenericRepository<T> : IRepository<T>
+        where T : class, IEntity
     {
-        public GenericRepository(ICGContext context)
+        public GenericRepository(ICGDbContext context)
         {
             if (context == null)
             {
-                throw new ArgumentException("An instance of DbContext is required to use this repository.", "context");
+                throw new ArgumentException(
+                    "An instance of DbContext is required to use this repository.",
+                    "context");
             }
 
             this.Context = context;
@@ -27,7 +30,7 @@
 
         protected IDbSet<T> DbSet { get; set; }
 
-        protected ICGContext Context { get; set; }
+        protected ICGDbContext Context { get; set; }
 
         public virtual IQueryable<T> All()
         {
@@ -95,19 +98,21 @@
         }
 
         /// <summary>
-        /// This method updates database values by using expression. It works with both anonymous and class objects.
-        /// It is used in one of the following ways:
-        /// 1. .UpdateValues(x => new Type { Id = ..., Property = ..., AnotherProperty = ... })
-        /// 2. .UpdateValues(x => new { Id = ..., Property = ..., AnotherProperty = ... })
+        ///     This method updates database values by using expression. It works with both anonymous and class objects.
+        ///     It is used in one of the following ways:
+        ///     1. .UpdateValues(x => new Type { Id = ..., Property = ..., AnotherProperty = ... })
+        ///     2. .UpdateValues(x => new { Id = ..., Property = ..., AnotherProperty = ... })
         /// </summary>
         /// <param name="entity">Expression for the updated entity</param>
         public virtual void UpdateValues(Expression<Func<T, object>> entity)
         {
             // compile the expression to delegate and invoke it
-            object compiledExpression = entity.Compile()(null);
+            var compiledExpression = entity.Compile()(null);
 
             // cast the result of invokation to T
-            T updatedEntity = compiledExpression is T ? compiledExpression as T : compiledExpression.CastTo<T>();
+            var updatedEntity = compiledExpression is T
+                                    ? compiledExpression as T
+                                    : compiledExpression.CastTo<T>();
 
             // attach the entry if missing in ObjectStateManager
             var entry = this.Context.Entry(updatedEntity);
@@ -130,48 +135,58 @@
             var values = entry.GetDatabaseValues();
             if (values == null)
             {
-                throw new InvalidOperationException("Object does not exists in ObjectStateDictionary. Entity Key|Id should be provided or valid.");
+                throw new InvalidOperationException(
+                    "Object does not exists in ObjectStateDictionary. Entity Key|Id should be provided or valid.");
             }
 
             // select the updated members as property names
             IEnumerable<string> members;
             if (compiledExpression is T)
             {
-                members = ((MemberInitExpression)entity.Body).Bindings.Select(b => b.Member.Name);
+                members =
+                    ((MemberInitExpression)entity.Body).Bindings.Select(
+                        b => b.Member.Name);
             }
             else
             {
-                members = ((NewExpression)entity.Body).Members.Select(m => m.Name);
+                members =
+                    ((NewExpression)entity.Body).Members.Select(m => m.Name);
             }
 
             // select all not mapped properties and set value
-            typeof(T)
-                .GetProperties()
-                .Where(pr => !pr.GetCustomAttributes(typeof(NotMappedAttribute), true).Any())
-                .ForEach(prop =>
-                        {
-                            if (members.Contains(prop.Name))
-                            {
-                                // if a member is updated set its state to modified
-                                entry.Property(prop.Name).IsModified = true;
-                            }
-                            else
-                            {
-                                // otherwise set the existing database value
-                                var value = values.GetValue<object>(prop.Name);
-                                prop.SetValue(entry.Entity, value);
-                            }
-                        });
+            typeof(T).GetProperties()
+                     .Where(
+                         pr =>
+                         !pr.GetCustomAttributes(
+                             typeof(NotMappedAttribute),
+                             true).Any())
+                     .ForEach(
+                         prop =>
+                         {
+                             if (members.Contains(prop.Name))
+                             {
+                                 // if a member is updated set its state to modified
+                                 entry.Property(prop.Name).IsModified = true;
+                             }
+                             else
+                             {
+                                 // otherwise set the existing database value
+                                 var value = values.GetValue<object>(prop.Name);
+                                 prop.SetValue(entry.Entity, value);
+                             }
+                         });
         }
 
         private int GetPrimaryKey(DbEntityEntry entry)
         {
             var myObject = entry.Entity;
 
-            var property = myObject
-                .GetType()
-                .GetProperties()
-                .FirstOrDefault(prop => Attribute.IsDefined(prop, typeof(KeyAttribute)));
+            var property =
+                myObject.GetType()
+                        .GetProperties()
+                        .FirstOrDefault(
+                            prop =>
+                            Attribute.IsDefined(prop, typeof(KeyAttribute)));
 
             return (int)property.GetValue(myObject, null);
         }

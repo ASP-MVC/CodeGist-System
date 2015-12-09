@@ -4,7 +4,8 @@
 
     using CG.Contracts;
 
-    public interface IDeletableEntityRepository<T> : IRepository<T> where T : IEntity
+    public interface IDeletableEntityRepository<T> : IRepository<T>
+        where T : IEntity
     {
         IQueryable<T> AllWithDeleted();
     }

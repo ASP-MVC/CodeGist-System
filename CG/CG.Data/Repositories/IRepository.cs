@@ -6,7 +6,8 @@
 
     using CG.Contracts;
 
-    public interface IRepository<T> where T : IEntity
+    public interface IRepository<T>
+        where T : IEntity
     {
         IQueryable<T> All();
 

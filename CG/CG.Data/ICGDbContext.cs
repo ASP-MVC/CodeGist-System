@@ -3,7 +3,7 @@
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
 
-    public interface ICGContext
+    public interface ICGDbContext
     {
         DbContext DbContext { get; }
 
