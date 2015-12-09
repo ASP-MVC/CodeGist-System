@@ -10,20 +10,22 @@
 
     public class RandomOMXDataGenerator : IRandomOMXDataGenerator
     {
-        private Random rnd;
+        private readonly Random rnd;
 
         public RandomOMXDataGenerator()
         {
-            this.rnd = new Random();    
+            this.rnd = new Random();
         }
 
         public IList<string> GenerateRandomData(string fileLocation)
         {
-            var currentDirectory = DirectoryLocator.GetCurrentDirectory(fileLocation);
-            
+            var currentDirectory =
+                DirectoryLocator.GetCurrentDirectory(fileLocation);
+
             var json = File.ReadAllText(currentDirectory);
 
-            var jsonObjects = JsonConvert.DeserializeObject<ObjectStructureDTO[]>(json);
+            var jsonObjects =
+                JsonConvert.DeserializeObject<ObjectStructureDTO[]>(json);
             var categoryNames = new List<string>();
             foreach (var jsonObject in jsonObjects)
             {

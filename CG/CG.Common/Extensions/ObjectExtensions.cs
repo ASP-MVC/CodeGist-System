@@ -12,11 +12,12 @@
             {
                 try
                 {
-                    result.GetType().GetProperty(property.Name).SetValue(result, property.GetValue(obj));
+                    result.GetType()
+                          .GetProperty(property.Name)
+                          .SetValue(result, property.GetValue(obj));
                 }
                 catch
                 {
-                    continue;
                 }
             }
 
