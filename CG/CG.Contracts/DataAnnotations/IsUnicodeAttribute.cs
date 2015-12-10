@@ -9,6 +9,6 @@
             this.IsUnicode = isUnicode;
         }
 
-        public bool IsUnicode { get; }
+        public bool IsUnicode { get; private set; }
     }
 }

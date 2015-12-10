@@ -1,0 +1,14 @@
+﻿@model IEnumerable<CG.Web.Models.ViewModels.TagViewModel>
+@{
+    ViewBag.Title = "All";
+}
+
+<h2>All</h2>
+
+<div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+        <div class="col-md-4">
+            @Html.DisplayFor(x => x, "TagViewModel")
+        </div>
+    </div>
+</div>
