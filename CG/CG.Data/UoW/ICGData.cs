@@ -10,5 +10,9 @@
         IRepository<User> Users { get; }
 
         IDeletableEntityRepository<CodeGist> CodeGists { get; }
+
+        ICGDbContext Context { get; }
+
+        int SaveChanges();
     }
 }
