@@ -267,6 +267,8 @@
     <Content Include="Views\Tags\All.cshtml" />
     <Content Include="Views\Shared\_NavigationPartial.cshtml" />
     <Content Include="Views\Tags\Create.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\CodeGistViewModel.cshtml" />
+    <Content Include="Views\Tags\GetTagCodeGists.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Shared\EditorTemplates\" />

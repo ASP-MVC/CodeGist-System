@@ -1,0 +1,12 @@
+﻿@model IEnumerable<CG.Web.Models.ViewModels.CodeGistViewModel>
+           
+@foreach (var cg in Model)
+{
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>@cg.Name</h3>
+            @Html.DisplayFor(x => cg.Tags, "TagViewModel")
+        </div>
+    </div>
+}
+
