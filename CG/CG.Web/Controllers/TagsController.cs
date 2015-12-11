@@ -56,6 +56,7 @@ namespace CG.Web.Controllers
             return this.View();
         }
 
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult Create(TagBindingModel model)
         {

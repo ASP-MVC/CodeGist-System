@@ -1,0 +1,7 @@
+﻿<ul class="nav navbar-nav">
+    <li>@Html.ActionLink("Tags", "All", "Tags")</li>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <li>@Html.ActionLink("Create Tag", "Create", "Tags")</li>
+    }
+</ul>

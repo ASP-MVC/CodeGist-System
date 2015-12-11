@@ -3,7 +3,7 @@
 @foreach (var tag in Model)
 {
     <div class="col-md-4">
-        @Html.ActionLink(tag.Title, "", "Tags", new { id = tag.Id }, new { @class = "label-primary" })
+        @Html.ActionLink(tag.Title, "GetTagCodeGists", "Tags", new { id = tag.Id }, new { @class = "" })
     </div>
 }
 

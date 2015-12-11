@@ -265,6 +265,8 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\TagViewModel.cshtml" />
     <Content Include="Views\Tags\All.cshtml" />
+    <Content Include="Views\Shared\_NavigationPartial.cshtml" />
+    <Content Include="Views\Tags\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Shared\EditorTemplates\" />
